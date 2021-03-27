@@ -1,5 +1,8 @@
-def compute_fibonacci(n):
-    a, b = 0, 1
-    for _ in range(n):
-        a, b = b, a + b
-    return a
+import functools
+
+
+@functools.lru_cache(maxsize=None, typed=True)
+def compute_fibonacci(n: int):
+    if n < 2:
+        return n
+    return compute_fibonacci(n-1) + compute_fibonacci(n-2)

@@ -54,8 +54,9 @@ assert len(r.json()['results'].values()) == 15
 
 
 # Test pagination:
-data = {'n': 200, 'type': 'list'}
+n = 100000
+data = {'n': n, 'type': 'list'}
 r = requests.get('http://localhost:5000/fibonacci', json=data)
-assert r.json()['count'] == 200
+assert r.json()['count'] == n
 assert r.json()['previous'] == ''
 assert r.json()['next'] == 'http://localhost:5000/fibonacci?start=101&limit=100'
