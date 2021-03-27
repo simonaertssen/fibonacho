@@ -45,7 +45,6 @@ def fibonacci():
     the_blacklist = load_app_state()
 
     data = request.get_json()
-    print(data)
     n = data['n']
     n = validate_input(n)
 
@@ -75,7 +74,7 @@ def blacklist():
     data = request.get_json()
     blacklist_me = data['n']
     blacklist_me = validate_input(blacklist_me)
-    
+
     if request.method == 'POST':
         if blacklist_me not in the_blacklist:
             the_blacklist.append(blacklist_me)
