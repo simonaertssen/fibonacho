@@ -1,6 +1,6 @@
-from flask import Flask, make_response, jsonify, request
+from flask import Flask, make_response, jsonify, request, abort
 from computations import compute_fibonacci
-from server_help import validate_input
+from server_help import validate_input, save_app_state, load_app_state
 
 
 app = Flask(__name__)
@@ -41,10 +41,30 @@ def fibonacci():
 @app.route('/blacklist', methods=['GET', 'POST', 'DELETE'])
 def blacklist():
     """
-    Get the blacklist, post a number in the blacklist, or delete a number from the blacklist
+    Get the blacklist, or post or delete a number in the blacklist
     """
-    blacklist = [1, 2, 3, 4]
-    return jsonify(blacklist)
+    the_blacklist = load_app_state()
+
+    if request.method == 'GET':
+        return jsonify(the_blacklist)
+
+    data = request.get_json()
+    blacklist_me = data['blacklist_me']
+    blacklist_me = validate_input(blacklist_me)
+
+    if request.method == 'POST':
+        if blacklist_me not in the_blacklist:
+            the_blacklist.append(blacklist_me)
+        else:
+            abort(400)
+    elif request.method == 'DELETE':
+        if blacklist_me in the_blacklist:
+            the_blacklist.remove(blacklist_me)
+        else:
+            abort(400)
+
+    save_app_state(the_blacklist)
+    return jsonify(the_blacklist)
 
 
 if __name__ == '__main__':

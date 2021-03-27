@@ -1,3 +1,4 @@
+from flask import abort
 import json
 
 
@@ -20,7 +21,7 @@ def validate_input(validate_me):
             raise TypeError
         validate_me = to_positive_integer(validate_me)
     except (TypeError, ValueError):
-        raise
+        abort(400)
     return validate_me
 
 
