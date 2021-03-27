@@ -42,12 +42,21 @@ def fibonacci():
     """
     Receive n and compute all fibonacci nubers up to and including n
     """
+    the_blacklist = load_app_state()
+
     data = request.get_json()
     print(data)
     n = data['n']
     n = validate_input(n)
 
-    keys = range(1, n)
+    if data['type'] == 'single':
+        possible_keys = [n]
+    elif data['type'] == 'list':
+        possible_keys = range(1, n + 1)
+    else:
+        abort(400)
+
+    keys = list(set(possible_keys) - set(the_blacklist))
     values = [compute_fibonacci(i) for i in keys]
     results = dict(zip(keys, values))
     return jsonify(results)
