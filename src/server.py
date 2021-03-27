@@ -13,7 +13,7 @@ PAGINATION_LIMIT = 100
 @app.errorhandler(400)
 def bad_request(error):
     """
-    Communicate the request was invalid
+    Communicate the request was invalid.
     """
     return make_response("Invalid nacho", 400)
 
@@ -21,7 +21,7 @@ def bad_request(error):
 @app.errorhandler(404)
 def not_found(error):
     """
-    Communicate the web page was not found
+    Communicate the web page was not found.
     """
     return make_response("Nacho not found", 404)
 
@@ -29,7 +29,7 @@ def not_found(error):
 @app.errorhandler(405)
 def not_allowed(error):
     """
-    Communicate the action was not allowed
+    Communicate the action was not allowed.
     """
     return make_response("To nacho or not to nacho, that is the question", 405)
 
@@ -37,7 +37,7 @@ def not_allowed(error):
 @app.errorhandler(500)
 def internal_error(error):
     """
-    Communicate the request was invalid
+    Communicate an internal error occured.
     """
     return make_response("This nacho is not configured for use in the browser yet", 500)
 
@@ -45,15 +45,17 @@ def internal_error(error):
 @app.route("/")
 def send_welcome():
     """
-    Host the main page
+    Host the main page.
     """
     return make_response("Welcome to fibonacho.com", 200)
 
 
-@app.route('/fibonacci/<data_type>/<int:n>', methods=['GET'])
+@app.route('/fibonacci/<quantity>/<int:n>', methods=['GET'])
 def handle_fibonacci_in_url(data_type: str, n: int):
     """
-    Receive type of data (single number or list of numbers)
+    Receive output quantity ('one' or 'all') and n (which term in the
+    fibonacci sequence) directly from the url for ease of interaction.
+    Return a list of either one or all fibonacci numbers.
     """
     return communicate_fibonacci(data_type, n)
 
@@ -61,13 +63,18 @@ def handle_fibonacci_in_url(data_type: str, n: int):
 @app.route('/fibonacci', methods=['GET'])
 def handle_fibonacci():
     """
-    Receive n and compute all fibonacci nubers up to and including n
+    Receive output quantity ('one' or 'all') and n (which term in the
+    fibonacci sequence) from json data. Return a list of either one 
+    or all fibonacci numbers.
     """
     data = request.get_json()
     return communicate_fibonacci(data['type'], data['n'])
 
 
 def communicate_fibonacci(data_type: str, n: int):
+    """
+    Wrapped function to deal with multiple input sources.
+    """
     n = validate_input(n)
     if data_type == 'single':
         possible_keys = [n]
@@ -90,7 +97,7 @@ def communicate_fibonacci(data_type: str, n: int):
 @app.route('/blacklist', methods=['GET', 'POST', 'DELETE'])
 def blacklist():
     """
-    Get the blacklist, or post or delete a number in the blacklist
+    Get the blacklist, or post or delete a number in the blacklist.
     """
     the_blacklist = load_app_state()
 
