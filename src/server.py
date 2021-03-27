@@ -8,16 +8,25 @@ app = Flask(__name__)
 
 @app.errorhandler(404)
 def not_found(error):
+    """
+    Communicate the web page was not found
+    """
     return make_response("Page not found", 404)
 
 
 @app.route("/")
 def send_welcome():
+    """
+    Host the main page
+    """
     return make_response("Welcome to fibonacho.com", 200)
 
 
 @app.route('/fibonacci', methods=['GET'])
 def fibonacci():
+    """
+    Receive n and compute all fibonacci nubers up to and including n
+    """
     data = request.get_json()
     print(data)
     n = data['n']
@@ -31,6 +40,9 @@ def fibonacci():
 
 @app.route('/blacklist', methods=['GET', 'POST', 'DELETE'])
 def blacklist():
+    """
+    Get the blacklist, post a number in the blacklist, or delete a number from the blacklist
+    """
     blacklist = [1, 2, 3, 4]
     return jsonify(blacklist)
 
