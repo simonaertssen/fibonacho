@@ -55,7 +55,6 @@ def blacklist():
     data = request.get_json()
     blacklist_me = data['n']
     blacklist_me = validate_input(blacklist_me)
-    print(blacklist_me)
     
     if request.method == 'POST':
         if blacklist_me not in the_blacklist:
