@@ -7,7 +7,10 @@ app = Flask(__name__)
 
 @app.errorhandler(400)
 def bad_request(error):
-    return make_response("Bad request", 400)
+    """
+    Communicate the request was invalid
+    """
+    return make_response("Invalid nacho", 400)
 
 
 @app.errorhandler(404)
@@ -15,7 +18,15 @@ def not_found(error):
     """
     Communicate the web page was not found
     """
-    return make_response("Page not found", 404)
+    return make_response("Nacho not found", 404)
+
+
+@app.errorhandler(405)
+def not_allowed(error):
+    """
+    Communicate the action was not allowed
+    """
+    return make_response("To nacho or not to nacho, that is the question", 405)
 
 
 @app.route("/")
