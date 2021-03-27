@@ -1,4 +1,5 @@
-from flask import Flask, make_response
+from flask import Flask, make_response, jsonify
+from computations import compute_fibonacci
 
 app = Flask(__name__)
 
@@ -15,12 +16,17 @@ def send_welcome():
 
 @app.route('/fibonacci', methods=['GET'])
 def fibonacci():
-    return make_response("Fibonacci", 200)
+    n = 15
+    keys = range(1, n)
+    values = [compute_fibonacci(i) for i in keys]
+    results = dict(zip(keys, values))
+    return jsonify(results)
 
 
 @app.route('/blacklist', methods=['GET', 'POST', 'DELETE'])
 def blacklist():
-    return make_response("Blacklist", 200)
+    blacklist = [1, 2, 3, 4]
+    return jsonify(blacklist)
 
 
 if __name__ == '__main__':

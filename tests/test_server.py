@@ -1,7 +1,11 @@
 import requests
 
 # Test the fibonacci address:
-r = requests.get('http://localhost:5000/fibonacci')
+data = {'n': 15}
+r = requests.get('http://localhost:5000/fibonacci', json=data)
+print(r.json())
 
 # Test the blacklist address:
-r = requests.get('http://localhost:5000/blacklist')
+data = {'n': 15}
+r = requests.get('http://localhost:5000/blacklist', json=data)
+print(r.json())
