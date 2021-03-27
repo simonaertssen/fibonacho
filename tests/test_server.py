@@ -41,13 +41,20 @@ assert r.status_code == 400
 # Test correct input
 data = {'n': 15, 'type': 'single'}
 r = requests.get('http://localhost:5000/fibonacci', json=data)
-assert len(r.json()) == 1
+assert len(r.json()['results'].values()) == 1
 
 r = requests.post('http://localhost:5000/blacklist', json={'n': 15})
 r = requests.get('http://localhost:5000/fibonacci', json=data)
-assert len(r.json()) == 0
+print(r)
+assert len(r.json()['results'].values()) == 0
 r = requests.delete('http://localhost:5000/blacklist', json={'n': 15})
 
 data = {'n': 15, 'type': 'list'}
 r = requests.get('http://localhost:5000/fibonacci', json=data)
 assert len(r.json()) == 15
+
+
+# Test pagination:
+data = {'n': 15, 'type': 'single'}
+r = requests.get('http://localhost:5000/fibonacci', json=data)
+print(r.json())

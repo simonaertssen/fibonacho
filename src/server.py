@@ -1,6 +1,8 @@
 from flask import Flask, make_response, jsonify, request, abort
 from computations import compute_fibonacci
 from server_help import validate_input, save_app_state, load_app_state
+from server_help import paginate
+
 
 app = Flask(__name__)
 
@@ -27,6 +29,14 @@ def not_allowed(error):
     Communicate the action was not allowed
     """
     return make_response("To nacho or not to nacho, that is the question", 405)
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    """
+    Communicate the request was invalid
+    """
+    return make_response("This nacho is not configured for use in the browser yet", 500)
 
 
 @app.route("/")
@@ -57,8 +67,7 @@ def fibonacci():
 
     keys = list(set(possible_keys) - set(the_blacklist))
     values = [compute_fibonacci(i) for i in keys]
-    results = dict(zip(keys, values))
-    return jsonify(results)
+    return paginate(keys, values, '/fibonacci', 1, 100)
 
 
 @app.route('/blacklist', methods=['GET', 'POST', 'DELETE'])
@@ -91,4 +100,4 @@ def blacklist():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

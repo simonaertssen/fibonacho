@@ -1,4 +1,4 @@
-from flask import abort
+from flask import abort, jsonify
 import json
 
 
@@ -40,6 +40,47 @@ def load_app_state():
     with open('the_blacklist.json', 'r') as f:
         the_blacklist = json.load(f)
     return the_blacklist
+
+
+def paginate(keys: list, values: list, url: str, start: int, limit: int):
+    """
+    Create a json object that displays a paginated version of the results teruned
+    by the fibonacci computation. The keys and values have been filtered out by the
+    blacklist.
+    Inspired by https://aviaryan.com/blog/gsoc/paginated-apis-flask
+    """
+    try:
+        start = to_positive_integer(start)
+        limit = to_positive_integer(limit)
+    except ValueError:
+        abort(400)
+
+    count = len(keys)
+    if (count < start):
+        abort(404)
+
+    page = {}
+    page['start'] = start
+    page['limit'] = limit
+    page['count'] = count
+
+    if start == 1:
+        page['previous'] = ''
+    else:
+        start_copy = max(1, start - limit)
+        limit_copy = start - 1
+        page['previous'] = url + f'?start={start_copy}&limit={limit_copy}'
+
+    if start + limit > count:
+        page['next'] = ''
+    else:
+        start_copy = start + limit
+        page['next'] = url + '?start=%d&limit=%d' % (start_copy, limit)
+
+    display_keys = keys[(start - 1):(start - 1 + limit)]
+    display_values = values[(start - 1):(start - 1 + limit)]
+    page['results'] = dict(zip(display_keys, display_values))
+    return jsonify(page)
 
 
 if __name__ == '__main__':
