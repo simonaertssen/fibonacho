@@ -39,6 +39,10 @@ r = requests.get('http://localhost:5000/fibonacci', json={'n': [1, 2, 'a']})
 assert r.status_code == 400
 
 # Test correct input
+data = {'n': 0, 'type': 'single'}
+r = requests.get('http://localhost:5000/fibonacci', json=data)
+assert r.json()['results'][str(0)] == 0
+
 data = {'n': 15, 'type': 'single'}
 r = requests.get('http://localhost:5000/fibonacci', json=data)
 assert len(r.json()['results'].values()) == 1
@@ -60,3 +64,12 @@ r = requests.get('http://localhost:5000/fibonacci', json=data)
 assert r.json()['count'] == n
 assert r.json()['previous'] == ''
 assert r.json()['next'] == 'http://localhost:5000/fibonacci?start=101&limit=100'
+
+
+r = requests.post('http://localhost:5000/blacklist', json={'n': 1})
+r = requests.post('http://localhost:5000/blacklist', json={'n': 2})
+r = requests.post('http://localhost:5000/blacklist', json={'n': 3})
+r = requests.post('http://localhost:5000/blacklist', json={'n': 4})
+data = {'n': 5, 'type': 'list'}
+r = requests.get('http://localhost:5000/fibonacci', json=data)
+assert r.json()['count'] == 1

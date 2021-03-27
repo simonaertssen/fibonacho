@@ -55,7 +55,6 @@ def paginate(keys: list, values: list, url: str, start: int, limit: int):
     except ValueError:
         abort(400)
 
-    print("STart")
     count = len(keys)
 
     page = {}
