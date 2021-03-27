@@ -45,16 +45,17 @@ assert len(r.json()['results'].values()) == 1
 
 r = requests.post('http://localhost:5000/blacklist', json={'n': 15})
 r = requests.get('http://localhost:5000/fibonacci', json=data)
-print(r)
 assert len(r.json()['results'].values()) == 0
 r = requests.delete('http://localhost:5000/blacklist', json={'n': 15})
 
 data = {'n': 15, 'type': 'list'}
 r = requests.get('http://localhost:5000/fibonacci', json=data)
-assert len(r.json()) == 15
+assert len(r.json()['results'].values()) == 15
 
 
 # Test pagination:
-data = {'n': 15, 'type': 'single'}
+data = {'n': 200, 'type': 'list'}
 r = requests.get('http://localhost:5000/fibonacci', json=data)
-print(r.json())
+assert r.json()['count'] == 200
+assert r.json()['previous'] == ''
+assert r.json()['next'] == 'http://localhost:5000/fibonacci?start=101&limit=100'

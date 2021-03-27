@@ -55,9 +55,8 @@ def paginate(keys: list, values: list, url: str, start: int, limit: int):
     except ValueError:
         abort(400)
 
+    print("STart")
     count = len(keys)
-    if (count < start):
-        abort(404)
 
     page = {}
     page['start'] = start
@@ -77,9 +76,14 @@ def paginate(keys: list, values: list, url: str, start: int, limit: int):
         start_copy = start + limit
         page['next'] = url + '?start=%d&limit=%d' % (start_copy, limit)
 
-    display_keys = keys[(start - 1):(start - 1 + limit)]
-    display_values = values[(start - 1):(start - 1 + limit)]
-    page['results'] = dict(zip(display_keys, display_values))
+    print(page['next'])
+
+    if count == 0:
+        page['results'] = {}
+    else:
+        display_keys = keys[(start - 1):(start - 1 + limit)]
+        display_values = values[(start - 1):(start - 1 + limit)]
+        page['results'] = dict(zip(display_keys, display_values))
     return jsonify(page)
 
 

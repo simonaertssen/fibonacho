@@ -6,6 +6,9 @@ from server_help import paginate
 
 app = Flask(__name__)
 
+PAGINATION_START = 1
+PAGINATION_LIMIT = 100
+
 
 @app.errorhandler(400)
 def bad_request(error):
@@ -67,7 +70,11 @@ def fibonacci():
 
     keys = list(set(possible_keys) - set(the_blacklist))
     values = [compute_fibonacci(i) for i in keys]
-    return paginate(keys, values, '/fibonacci', 1, 100)
+
+    start = request.args.get('start', PAGINATION_START)
+    limit = request.args.get('limit', PAGINATION_LIMIT)
+    url = request.url.rsplit('?', 1)[0]
+    return paginate(keys, values, url, start, limit)
 
 
 @app.route('/blacklist', methods=['GET', 'POST', 'DELETE'])
