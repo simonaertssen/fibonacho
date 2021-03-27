@@ -39,11 +39,11 @@ r = requests.get('http://localhost:5000/fibonacci', json={'n': [1, 2, 'a']})
 assert r.status_code >= 400
 
 # Test correct input
-data = {'n': 0, 'type': 'single'}
+data = {'n': 0, 'quantity': 'one'}
 r = requests.get('http://localhost:5000/fibonacci', json=data)
 assert r.json()['results'][str(0)] == 0
 
-data = {'n': 15, 'type': 'single'}
+data = {'n': 15, 'quantity': 'one'}
 r = requests.get('http://localhost:5000/fibonacci', json=data)
 assert len(r.json()['results'].values()) == 1
 
@@ -52,14 +52,14 @@ r = requests.get('http://localhost:5000/fibonacci', json=data)
 assert len(r.json()['results'].values()) == 0
 r = requests.delete('http://localhost:5000/blacklist', json={'n': 15})
 
-data = {'n': 15, 'type': 'list'}
+data = {'n': 15, 'quantity': 'all'}
 r = requests.get('http://localhost:5000/fibonacci', json=data)
 assert len(r.json()['results'].values()) == 15
 
 
 # Test pagination:
 n = 100000
-data = {'n': n, 'type': 'list'}
+data = {'n': n, 'quantity': 'all'}
 r = requests.get('http://localhost:5000/fibonacci', json=data)
 assert r.json()['count'] == n
 assert r.json()['previous'] == ''
@@ -70,6 +70,6 @@ r = requests.post('http://localhost:5000/blacklist', json={'n': 1})
 r = requests.post('http://localhost:5000/blacklist', json={'n': 2})
 r = requests.post('http://localhost:5000/blacklist', json={'n': 3})
 r = requests.post('http://localhost:5000/blacklist', json={'n': 4})
-data = {'n': 5, 'type': 'list'}
+data = {'n': 5, 'quantity': 'all'}
 r = requests.get('http://localhost:5000/fibonacci', json=data)
 assert r.json()['count'] == 1

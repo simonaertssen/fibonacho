@@ -51,13 +51,13 @@ def send_welcome():
 
 
 @app.route('/fibonacci/<quantity>/<int:n>', methods=['GET'])
-def handle_fibonacci_in_url(data_type: str, n: int):
+def handle_fibonacci_in_url(quantity: str, n: int):
     """
     Receive output quantity ('one' or 'all') and n (which term in the
     fibonacci sequence) directly from the url for ease of interaction.
     Return a list of either one or all fibonacci numbers.
     """
-    return communicate_fibonacci(data_type, n)
+    return communicate_fibonacci(quantity, n)
 
 
 @app.route('/fibonacci', methods=['GET'])
@@ -68,7 +68,7 @@ def handle_fibonacci():
     or all fibonacci numbers.
     """
     data = request.get_json()
-    return communicate_fibonacci(data['type'], data['n'])
+    return communicate_fibonacci(data['quantity'], data['n'])
 
 
 def communicate_fibonacci(data_type: str, n: int):
@@ -76,9 +76,9 @@ def communicate_fibonacci(data_type: str, n: int):
     Wrapped function to deal with multiple input sources.
     """
     n = validate_input(n)
-    if data_type == 'single':
+    if data_type == 'one':
         possible_keys = [n]
-    elif data_type == 'list':
+    elif data_type == 'all':
         possible_keys = range(1, n + 1)
     else:
         abort(400)
