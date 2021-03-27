@@ -1,5 +1,5 @@
 from flask import Flask, make_response, jsonify, request, abort
-from computations import compute_fibonacci
+from computations import fibonacci_single, fibonacci_list
 from server_help import validate_input, save_app_state, load_app_state
 from server_help import paginate
 
@@ -63,8 +63,10 @@ def fibonacci():
 
     if data['type'] == 'single':
         possible_keys = [n]
+        compute_fibonacci = fibonacci_single
     elif data['type'] == 'list':
-        possible_keys = range(1, n + 1)
+        possible_keys = range(1, n)
+        compute_fibonacci = fibonacci_list
     else:
         abort(400)
 
