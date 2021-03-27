@@ -24,4 +24,5 @@ def blacklist():
 
 
 if __name__ == '__main__':
+    print("App started")
     app.run(debug=True)
