@@ -29,7 +29,7 @@ def save_app_state(the_blacklist: list):
     """
     Save the blacklist to disk as it should persist in application state
     """
-    with open('../the_blacklist.json', 'w') as f:
+    with open('the_blacklist.json', 'w') as f:
         json.dump(the_blacklist, f)
 
 
@@ -37,6 +37,12 @@ def load_app_state():
     """
     Load the persisted blacklist
     """
-    with open('../the_blacklist.json', 'r') as f:
+    with open('the_blacklist.json', 'r') as f:
         the_blacklist = json.load(f)
     return the_blacklist
+
+
+if __name__ == '__main__':
+    the_blacklist = [0, 1, 2]
+    save_app_state(the_blacklist)
+    print('Blacklist saved')

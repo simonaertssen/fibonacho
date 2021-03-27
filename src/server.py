@@ -2,8 +2,12 @@ from flask import Flask, make_response, jsonify, request, abort
 from computations import compute_fibonacci
 from server_help import validate_input, save_app_state, load_app_state
 
-
 app = Flask(__name__)
+
+
+@app.errorhandler(400)
+def bad_request(error):
+    return make_response("Bad request", 400)
 
 
 @app.errorhandler(404)
@@ -49,9 +53,10 @@ def blacklist():
         return jsonify(the_blacklist)
 
     data = request.get_json()
-    blacklist_me = data['blacklist_me']
+    blacklist_me = data['n']
     blacklist_me = validate_input(blacklist_me)
-
+    print(blacklist_me)
+    
     if request.method == 'POST':
         if blacklist_me not in the_blacklist:
             the_blacklist.append(blacklist_me)
