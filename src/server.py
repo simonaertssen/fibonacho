@@ -1,5 +1,5 @@
 from flask import Flask, make_response, jsonify, request, abort
-from computations import fibonacci_single, fibonacci_list
+from computations import compute_fibonacci
 from server_help import validate_input, save_app_state, load_app_state
 from server_help import paginate
 
@@ -50,25 +50,33 @@ def send_welcome():
     return make_response("Welcome to fibonacho.com", 200)
 
 
+@app.route('/fibonacci/<data_type>/<int:n>', methods=['GET'])
+def handle_fibonacci_in_url(data_type: str, n: int):
+    """
+    Receive type of data (single number or list of numbers)
+    """
+    return communicate_fibonacci(data_type, n)
+
+
 @app.route('/fibonacci', methods=['GET'])
-def fibonacci():
+def handle_fibonacci():
     """
     Receive n and compute all fibonacci nubers up to and including n
     """
-    the_blacklist = load_app_state()
-
     data = request.get_json()
-    n = data['n']
-    n = validate_input(n)
+    return communicate_fibonacci(data['type'], data['n'])
 
-    if data['type'] == 'single':
+
+def communicate_fibonacci(data_type: str, n: int):
+    n = validate_input(n)
+    if data_type == 'single':
         possible_keys = [n]
-        compute_fibonacci = fibonacci_single
-    elif data['type'] == 'list':
-        possible_keys = range(1, n)
-        compute_fibonacci = fibonacci_list
+    elif data_type == 'list':
+        possible_keys = range(1, n + 1)
     else:
         abort(400)
+
+    the_blacklist = load_app_state()
 
     keys = list(set(possible_keys) - set(the_blacklist))
     values = [compute_fibonacci(i) for i in keys]
@@ -109,4 +117,4 @@ def blacklist():
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)

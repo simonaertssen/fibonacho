@@ -13,6 +13,7 @@ def compute_fibonacci(n: int):
 
 
 def fibonacci_single(n: int):
+    print("For integers")
     return compute_fibonacci(n)
 
 
