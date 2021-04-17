@@ -18,7 +18,7 @@ Run the sample server
     python src/server.py
 
 ## Usage:
-Get the 5th fibonacci number:
+Get only the 5th fibonacci number:
 
     curl -GET http://localhost:5000/fibonacci/one/5
 
