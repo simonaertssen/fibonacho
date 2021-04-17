@@ -39,7 +39,7 @@ def internal_error(error):
     """
     Communicate an internal error occured.
     """
-    return make_response("This nacho is not configured for use in the browser yet", 500)
+    return make_response("This nacho is not configured for use in the browser", 500)
 
 
 @app.route("/")
@@ -64,7 +64,7 @@ def handle_fibonacci_in_url(quantity: str, n: int):
 def handle_fibonacci():
     """
     Receive output quantity ('one' or 'all') and n (which term in the
-    fibonacci sequence) from json data. Return a list of either one 
+    fibonacci sequence) from json data. Return a list of either one
     or all fibonacci numbers.
     """
     data = request.get_json()
