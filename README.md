@@ -20,34 +20,38 @@ Run the sample server
 ## Usage:
 Get the 5th fibonacci number:
 
-    curl -XGET http://localhost:5000/fibonacci/one/5
+    curl -GET http://localhost:5000/fibonacci/one/5
 
 Get the fibonacci sequence up to and including the 10th number:
 
-    curl -XGET http://localhost:5000/fibonacci/one/5
+    curl -GET http://localhost:5000/fibonacci/all/10
 
-Get the blacklist, which 
+Get the blacklist:
 
-    curl -XGET http://localhost:5000/fibonacci/one/5
+    curl -GET http://localhost:5000/blacklist
+
+Post the number 10 to the blacklist so that is removed from all future output:
+
+    curl -POST -H "Content-Type: application/json" http://localhost:5000/blacklist -d '{"n": 10}'
+
+Delete the number 10 from the blacklist so that is present in all future output:
+
+    curl -X DELETE -H "Content-Type: application/json" http://localhost:5000/blacklist -d '{"n": 10}'
 
 ## Output:
-An example output for [http://localhost:5000/fibonacci/one/5](http://localhost:5000/fibonacci/one/5) is:
+The output for [http://localhost:5000/fibonacci/all/1000](http://localhost:5000/fibonacci/all/1000) is:
 
     {
-    "count": 1, 
+    "count": 1000, 
     "limit": 100, 
-    "next": "", 
+    "next": "http://localhost:5000/fibonacci/all/1000?start=101&limit=100", 
     "previous": "", 
     "results": {
-        "5": 5
+        "1": 1, 
+        ...
+        "100": 354224848179261915075
     }, 
     "start": 1
     }
 
-
-Try the endpoints:
-
-    curl -XGET http://localhost:5000/dummy
-    curl -XPOST -H "Content-Type: application/json" http://localhost:5000/hello -d '{"name": "World"}'
-
-Swagger docs available at `http://localhost:5000/api/spec.html`
+There is a count of 10 numbers, with a limit of 100 per page. Th next and previous pages are given by urls in the case that we are querying more than 100 numbers.
