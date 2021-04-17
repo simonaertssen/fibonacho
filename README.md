@@ -54,4 +54,9 @@ The output for [http://localhost:5000/fibonacci/all/1000](http://localhost:5000/
     "start": 1
     }
 
-There is a count of 10 numbers, with a limit of 100 per page. Th next and previous pages are given by urls in the case that we are querying more than 100 numbers.
+There is a count of 10 numbers, with a limit of 100 per page. The next and previous pages are given by urls in the case that we are querying more than 100 numbers.
+
+## Testing:
+Test the application (assuming the venv is activated) with:
+
+    pytest
