@@ -2,9 +2,7 @@ import requests
 import sys
 import os
 
-directory = os.path.dirname(__file__)
-sys.path.insert(0, os.path.abspath(os.path.join(directory, '../src/')))
-from server_help import save_app_state, load_app_state
+from src.server_help import save_app_state, load_app_state
 
 
 # Run these tests with an empty blacklist:
