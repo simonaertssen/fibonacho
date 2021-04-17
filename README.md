@@ -31,7 +31,8 @@ Get the blacklist, which
     curl -XGET http://localhost:5000/fibonacci/one/5
 
 ## Output:
-An example output for <url=http://localhost:5000/fibonacci/one/5> is:
+An example output for [http://localhost:5000/fibonacci/one/5](http://localhost:5000/fibonacci/one/5) is:
+
     {
     "count": 1, 
     "limit": 100, 
