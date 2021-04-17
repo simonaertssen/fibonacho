@@ -15,7 +15,7 @@ def bad_request(error):
     """
     Communicate the request was invalid.
     """
-    return make_response("Invalid nacho", 400)
+    return make_response("Invalid nacho\n", 400)
 
 
 @app.errorhandler(404)
@@ -23,7 +23,7 @@ def not_found(error):
     """
     Communicate the web page was not found.
     """
-    return make_response("Nacho not found", 404)
+    return make_response("Nacho not found\n", 404)
 
 
 @app.errorhandler(405)
@@ -31,7 +31,7 @@ def not_allowed(error):
     """
     Communicate the action was not allowed.
     """
-    return make_response("To nacho or not to nacho, that is the question", 405)
+    return make_response("To nacho or not to nacho, that is the question\n", 405)
 
 
 @app.errorhandler(500)
@@ -39,7 +39,7 @@ def internal_error(error):
     """
     Communicate an internal error occured.
     """
-    return make_response("This nacho is not configured for use in the browser", 500)
+    return make_response("This nacho is not configured for use in the browser\n", 500)
 
 
 @app.route("/")
@@ -47,7 +47,7 @@ def send_welcome():
     """
     Host the main page.
     """
-    return make_response("Welcome to fibonacho.com", 200)
+    return make_response("Welcome to fibonacho.com\n", 200)
 
 
 @app.route('/fibonacci/<quantity>/<int:n>', methods=['GET'])
